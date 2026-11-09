@@ -109,7 +109,7 @@ PayPal_Hackathon/
 ### 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/shyammodi11/Paypal-AI-Analytics
 cd PayPal_Hackathon
 ```
 
