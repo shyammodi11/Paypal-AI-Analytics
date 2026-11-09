@@ -10,6 +10,7 @@ from backend.database.db import (
     get_all_reviews,
     get_review_by_id
 )
+from backend.paypal_client import create_sandbox_order, capture_sandbox_order
 
 app = FastAPI(
     title="PayPal Sentinel API",
@@ -56,6 +57,86 @@ def health_check():
         "application": "PayPal Sentinel API"
     }
 
+# ============================================================
+# PAYPAL SANDBOX ORDER
+# ============================================================
+
+@app.post("/paypal/create-order")
+def create_paypal_order():
+
+    try:
+        order = create_sandbox_order()
+
+        return {
+            "success": True,
+            "paypal_order_id": order["id"],
+            "status": order["status"],
+            "approval_url": next(
+                (
+                    link["href"]
+                    for link in order.get("links", [])
+                    if link["rel"] == "approve"
+                ),
+                None
+            )
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"PayPal integration failed: {str(e)}"
+        )
+
+@app.post("/paypal/capture-order/{order_id}")
+def capture_paypal_order(order_id: str):
+
+    try:
+        result = capture_sandbox_order(order_id)
+
+        captures = (
+            result.get("purchase_units", [{}])[0]
+            .get("payments", {})
+            .get("captures", [])
+        )
+
+        return {
+            "success": True,
+            "paypal_order_id": result.get("id"),
+            "status": result.get("status"),
+            "capture_id": captures[0].get("id") if captures else None
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"PayPal capture failed: {str(e)}"
+        )
+
+@app.get("/paypal/success")
+def paypal_success(token: str):
+
+    try:
+        result = capture_sandbox_order(token)
+
+        captures = (
+            result.get("purchase_units", [{}])[0]
+            .get("payments", {})
+            .get("captures", [])
+        )
+
+        return {
+            "success": True,
+            "message": "PayPal payment completed successfully.",
+            "paypal_order_id": result.get("id"),
+            "status": result.get("status"),
+            "capture_id": captures[0].get("id") if captures else None
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=502,
+            detail=f"PayPal payment capture failed: {str(e)}"
+        )
 
 # ============================================================
 # SUBMIT REVIEW

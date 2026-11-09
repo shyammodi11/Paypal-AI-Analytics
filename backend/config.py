@@ -16,6 +16,14 @@ GROQ_MODEL = os.getenv(
     "openai/gpt-oss-120b"
 )
 
+# PayPal Sandbox configuration
+PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
+PAYPAL_CLIENT_SECRET = os.getenv("PAYPAL_CLIENT_SECRET")
+PAYPAL_BASE_URL = os.getenv(
+    "PAYPAL_BASE_URL",
+    "https://api-m.sandbox.paypal.com"
+)
+
 # Data directories
 DATA_DIR = PROJECT_DIR / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
