@@ -1,0 +1,28 @@
+
+# Dashboard
+streamlit
+pandas
+numpy
+plotly
+matplotlib
+wordcloud
+
+# AI Agents
+langchain
+langchain-core
+langchain-groq
+langgraph
+groq
+
+# API
+fastapi
+uvicorn
+pydantic
+
+# Data processing and utilities
+scikit-learn
+scipy
+python-dotenv
+requests
+beautifulsoup4
+

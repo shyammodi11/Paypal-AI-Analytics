@@ -1,0 +1,46 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Runtime files
+*.log
+
+# Checkpoints
+data/processed/checkpoints/
+
+# IDE and editor
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+
+# Raw and processed datasets
+data/raw/
+data/processed/*.csv
+
+# SQLite databases and backups
+data/processed/*.db
+data/processed/*.sqlite
+data/processed/*.sqlite3
+
+# Local testing files
+/test_gpu.py
+/test_groq_models.py
