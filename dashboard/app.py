@@ -2,6 +2,20 @@
 import sys
 from pathlib import Path
 
+
+# Ensure UTF-8 output encoding across Windows terminals
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+if hasattr(sys.stderr, "reconfigure"):
+    try:
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go

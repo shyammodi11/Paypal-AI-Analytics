@@ -300,8 +300,12 @@ def execute_selected_agents(agent_questions: dict):
                 f"Invalid assigned question for {agent_name}."
             )
 
-        print(f"\nExecuting {agent_name.upper()} Agent...")
-        print("ASSIGNED TASK:", assigned_question)
+        try:
+            print(f"\nExecuting {agent_name.upper()} Agent...")
+            print("ASSIGNED TASK:", assigned_question)
+        except UnicodeEncodeError:
+            print(f"\nExecuting {agent_name.upper()} Agent...")
+            print("ASSIGNED TASK:", assigned_question.encode("ascii", errors="replace").decode("ascii"))
 
         try:
             response = agent_functions[agent_name](assigned_question)
@@ -320,7 +324,10 @@ def execute_selected_agents(agent_questions: dict):
                 "error": str(exc)
             }
 
-            print(f"{agent_name.upper()} Agent failed: {exc}")
+            try:
+                print(f"{agent_name.upper()} Agent failed: {exc}")
+            except UnicodeEncodeError:
+                print(f"{agent_name.upper()} Agent failed: {str(exc).encode('ascii', errors='replace').decode('ascii')}")
 
     return results
 
